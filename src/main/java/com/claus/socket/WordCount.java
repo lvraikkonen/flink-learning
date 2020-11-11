@@ -26,14 +26,13 @@ public class WordCount {
                     @Override
                     public void flatMap(String s, Collector<Tuple2<String, Integer>> collector) throws Exception {
                         String[] tokens = s.toLowerCase().split("\\W+");
-                        for (String word: tokens) {
+                        for (String word : tokens) {
                             if (word.length() > 0) {
                                 collector.collect(new Tuple2<>(word, 1));
                             }
                         }
                     }
-                })
-                .keyBy(0)
+                }).keyBy(value -> value.f0)
                 .timeWindow(Time.minutes(1))
                 .sum(1);
 
